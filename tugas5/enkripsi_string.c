@@ -22,19 +22,29 @@ int stringchecker(char arahinput[], char arahsistem[]) { //pengganti fungsi strc
 
 void enkripsi_string(char *string, char *arah, int pergeseran) { //fungsi untuk mengenkripsi string
     
+    pergeseran = pergeseran % 26;
     int i = 0;
     while (string[i] != '\0') {
 
         if (string[i] >= 'a' && string[i] <= 'z') {
             if (stringchecker(arah, "kiri")) {
-                string[i] = string[i] - pergeseran; 
-            } else if (stringchecker(arah, "kanan")) {
-                string[i] = string[i] + pergeseran; 
+                string[i] = string[i] - pergeseran;
+                if (string[i] < 'a') {
+                    string[i] = string[i] + 26; 
+                }
+            } 
+            
+            
+            else if (stringchecker(arah, "kanan")) {
+                string[i] = string[i] + pergeseran;
+                if (string[i] > 'z') {
+                    string[i] = string[i] - 26;
+                }
             }
         }
         i++;
     }
-    printf("String hasil enkripsi: %s", string);
+    printf("Hasil enkripsi: %s", string);
 }
 
 
@@ -59,10 +69,15 @@ int main () {
     } while (pergeseran <= 0);
     
     printf("Arah pergeseran: ");
-    scanf(" %s", arah);
-    for(int i = 0; arah[i] != '\0'; i++) {
-        arah[i] = stringkecil(arah[i]); 
-    }
+    do {
+        scanf("%s", arah);
+        for(int i = 0; arah[i] != '\0'; i++) {
+            arah[i] = stringkecil(arah[i]); 
+        }
+        if (stringchecker(arah, "kiri") == 0 && stringchecker(arah, "kanan") == 0) {
+            printf("Masukkan arah pergeseran yang valid: ");
+        }
+    } while (stringchecker(arah, "kiri") == 0 && stringchecker(arah, "kanan") == 0); 
 
     enkripsi_string(string, arah, pergeseran);
     
